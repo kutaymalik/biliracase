@@ -1,27 +1,31 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppDispatch } from '../store/store'; 
-import { fetchCoinGeckoData } from '../api/coingecko';
+import { AppDispatch } from '../store/store';
+import { fetchExchangeInfo, fetchKlineData } from '../api/binance';
 
 interface Asset {
-  id: string;
-  name: string;
-  current_price: number;
-  market_cap: number;
-  price_change_percentage_24h: number;
-  sparkline_in_7d: { price: number[] };
-  image: string; // Include image property
+  s: string;
+  c: string;
+  p: string;
+  q: string;
+  P: string;
+  klineData?: number[];
+  priceChanged?: boolean;
 }
 
 interface AssetsState {
   assets: Asset[];
   iconMap: { [key: string]: string };
   errorIcons: string[];
+  symbolMap: { [key: string]: string };
+  nameMap: { [key: string]: string }; // Coin isimleri için ekleme
 }
 
 const initialState: AssetsState = {
   assets: [],
   iconMap: JSON.parse(localStorage.getItem('iconMap') || '{}'),
   errorIcons: [],
+  symbolMap: JSON.parse(localStorage.getItem('symbolMap') || '{}'),
+  nameMap: JSON.parse(localStorage.getItem('nameMap') || '{}'), // Coin isimleri için ekleme
 };
 
 const assetsSlice = createSlice({
@@ -29,18 +33,24 @@ const assetsSlice = createSlice({
   initialState,
   reducers: {
     setInitialAssets(state, action: PayloadAction<Asset[]>) {
-      const sortedAssets = action.payload.sort((a, b) => a.name.localeCompare(b.name));
-      state.assets = sortedAssets;
-      state.iconMap = sortedAssets.reduce((map, asset) => {
-        map[asset.id] = asset.image; // Use image URL from CoinGecko
-        return map;
-      }, {} as { [key: string]: string });
-      localStorage.setItem('iconMap', JSON.stringify(state.iconMap));
+      state.assets = action.payload;
     },
     updateAsset(state, action: PayloadAction<Asset>) {
-      const index = state.assets.findIndex(asset => asset.id === action.payload.id);
+      const index = state.assets.findIndex(asset => asset.s === action.payload.s);
       if (index !== -1) {
-        state.assets[index] = { ...state.assets[index], ...action.payload };
+        const previousPrice = parseFloat(state.assets[index].c);
+        const newPrice = parseFloat(action.payload.c);
+        state.assets[index] = {
+          ...state.assets[index],
+          ...action.payload,
+          priceChanged: previousPrice !== newPrice
+        };
+      }
+    },
+    setKlineData(state, action: PayloadAction<{ symbol: string, klineData: number[] }>) {
+      const index = state.assets.findIndex(asset => asset.s === action.payload.symbol);
+      if (index !== -1) {
+        state.assets[index].klineData = action.payload.klineData;
       }
     },
     addErrorIcon(state, action: PayloadAction<string>) {
@@ -48,18 +58,66 @@ const assetsSlice = createSlice({
         state.errorIcons.push(action.payload);
       }
     },
+    setIconMap(state, action: PayloadAction<{ [key: string]: string }>) {
+      state.iconMap = action.payload;
+      localStorage.setItem('iconMap', JSON.stringify(state.iconMap));
+    },
+    setSymbolMap(state, action: PayloadAction<{ [key: string]: string }>) {
+      state.symbolMap = action.payload;
+      localStorage.setItem('symbolMap', JSON.stringify(state.symbolMap));
+    },
+    setNameMap(state, action: PayloadAction<{ [key: string]: string }>) { // Coin isimleri için ekleme
+      state.nameMap = action.payload;
+      localStorage.setItem('nameMap', JSON.stringify(state.nameMap));
+    },
   },
 });
 
-export const { setInitialAssets, updateAsset, addErrorIcon } = assetsSlice.actions;
+export const { setInitialAssets, updateAsset, setKlineData, addErrorIcon, setIconMap, setSymbolMap, setNameMap } = assetsSlice.actions;
 export default assetsSlice.reducer;
 
 export const initializeAssets = () => async (dispatch: AppDispatch) => {
   try {
-    const coinData = await fetchCoinGeckoData();
-    const filteredAssets = coinData.filter((asset: Asset) => asset.current_price > 0 && asset.market_cap > 0);
-    dispatch(setInitialAssets(filteredAssets));
+    const exchangeInfo = await fetchExchangeInfo();
+    const assets = exchangeInfo.symbols.map((symbolInfo: { symbol: string, baseAsset: string, quoteAsset: string }) => ({
+      s: symbolInfo.symbol,
+      c: '0',
+      p: '0',
+      q: '0',
+      P: '0',
+    }));
+
+    dispatch(setInitialAssets(assets));
+
+    const symbolMap = exchangeInfo.symbols.reduce((map: { [key: string]: string }, symbolInfo: { symbol: string; baseAsset: string; quoteAsset: string }) => {
+      map[symbolInfo.symbol] = `${symbolInfo.baseAsset}/${symbolInfo.quoteAsset}`;
+      return map;
+    }, {});
+    
+    const iconMap = assets.reduce((map: { [key: string]: string }, asset: Asset) => {
+      const baseAsset = symbolMap[asset.s]?.split('/')[0].toLowerCase();
+      if (baseAsset) {
+        map[asset.s] = `https://assets.coincap.io/assets/icons/${baseAsset}@2x.png`;
+      }
+      return map;
+    }, {});
+
+    const nameMap = exchangeInfo.symbols.reduce((map: { [key: string]: string }, symbolInfo: { symbol: string, baseAsset: string }) => {
+      map[symbolInfo.symbol] = symbolInfo.baseAsset;
+      return map;
+    }, {});
+
+    dispatch(setIconMap(iconMap));
+    dispatch(setSymbolMap(symbolMap));
+    dispatch(setNameMap(nameMap));
+
+    // Fetch initial kline data for sparklines
+    for (const asset of assets) {
+      const klineData = await fetchKlineData(asset.s);
+      dispatch(setKlineData({ symbol: asset.s, klineData }));
+    }
+
   } catch (error) {
-    console.error('Error initializing assets', error);
+    console.error('Error initializing assets with icon map', error);
   }
 };

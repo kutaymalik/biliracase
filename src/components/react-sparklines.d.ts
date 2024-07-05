@@ -1,7 +1,7 @@
 declare module 'react-sparklines' {
     import * as React from 'react';
-  
-    export interface SparklinesProps {
+
+    interface SparklinesProps {
       data: number[];
       limit?: number;
       width?: number;
@@ -13,14 +13,14 @@ declare module 'react-sparklines' {
       min?: number;
       max?: number;
       style?: React.CSSProperties;
+      children?: React.ReactNode; // Add this line
     }
-  
-    export interface SparklinesLineProps {
+
+    interface SparklinesLineProps {
       color?: string;
       style?: React.CSSProperties;
     }
-  
-    export class Sparklines extends React.Component<SparklinesProps> {}
-    export class SparklinesLine extends React.Component<SparklinesLineProps> {}
-  }
-  
+
+    export class Sparklines extends React.Component<SparklinesProps, any> {}
+    export class SparklinesLine extends React.Component<SparklinesLineProps, any> {}
+}

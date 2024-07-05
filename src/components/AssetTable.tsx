@@ -1,17 +1,31 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../store/store';
-import { initializeAssets, addErrorIcon } from '../store/assetsSlice';
+import { initializeAssets, updateAsset, addErrorIcon } from '../store/assetsSlice';
+import useWebSocket from '../hooks/useWebSocket';
+import { Asset } from '../types/Asset';
+import './style/AssetTable.css';
 
 const AssetTable = () => {
   const dispatch = useDispatch<AppDispatch>();
   const assets = useSelector((state: RootState) => state.assets.assets);
   const iconMap = useSelector((state: RootState) => state.assets.iconMap);
   const errorIcons = useSelector((state: RootState) => state.assets.errorIcons);
+  const symbolMap = useSelector((state: RootState) => state.assets.symbolMap);
+  const nameMap = useSelector((state: RootState) => state.assets.nameMap); // Coin isimlerini eklemek için
+  const data = useWebSocket('wss://stream.binance.com:9443/ws/!ticker@arr');
 
   useEffect(() => {
     dispatch(initializeAssets());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (assets.length > 0) {
+      data.forEach((asset: Asset) => {
+        dispatch(updateAsset(asset));
+      });
+    }
+  }, [data, dispatch, assets.length]);
 
   return (
     <div className="container mx-auto p-4">
@@ -19,42 +33,63 @@ const AssetTable = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Market Cap</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">24h Change</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">24h Sparkline</th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Name
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Price
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Market Value
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                24h Change
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                24h Sparkline
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {assets.map((asset) => (
-              <tr key={asset.id}>
+            {assets.filter(asset => parseFloat(asset.c) !== 0 && parseFloat(asset.q) !== 0).map((asset) => (
+              <tr key={asset.s} className={asset.priceChanged ? 'flash' : ''}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  <img 
-                    src={iconMap[asset.id] || 'default-icon.png'}
-                    alt={asset.name}
-                    className="inline-block w-6 h-6 mr-2"
-                    onError={(e) => {
-                      if (!errorIcons.includes(asset.id)) {
-                        e.currentTarget.src = 'default-icon.png';
-                        e.currentTarget.alt = 'default-icon';
-                        dispatch(addErrorIcon(asset.id));
-                      }
-                    }}
-                  />
-                  {asset.name}
+                  <div className="flex items-center">
+                    <img
+                      src={iconMap[asset.s] || 'default-icon.png'}
+                      alt={asset.s}
+                      className="inline-block w-6 h-6 mr-2"
+                      onError={(e) => {
+                        if (!errorIcons.includes(asset.s)) {
+                          e.currentTarget.src = 'default-icon.png';
+                          e.currentTarget.alt = 'default-icon';
+                          dispatch(addErrorIcon(asset.s));
+                        }
+                      }}
+                    />
+                    <div>
+                      <div className="text-sm font-semibold">
+                        {symbolMap[asset.s] || asset.s}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {nameMap[asset.s] || asset.s.replace('USDT', '')}
+                      </div>
+                    </div>
+                  </div>
                 </td>
-                <td className={`px-6 py-4 whitespace-nowrap text-sm ${asset.current_price > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                  ${asset.current_price.toFixed(2)}
+                <td className={`px-6 py-4 whitespace-nowrap text-sm price ${parseFloat(asset.p) > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                  {asset.c}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm value text-gray-500">
+                  {asset.q}
+                </td>
+                <td className={`px-6 py-4 whitespace-nowrap text-sm change ${parseFloat(asset.P) > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                  {asset.P}%
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  ${asset.market_cap.toLocaleString()}
-                </td>
-                <td className={`px-6 py-4 whitespace-nowrap text-sm ${asset.price_change_percentage_24h > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                  {asset.price_change_percentage_24h.toFixed(2)}%
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <Sparkline data={asset.sparkline_in_7d.price} />
+                  {asset.klineData && (
+                    <Sparkline data={asset.klineData} />
+                  )}
                 </td>
               </tr>
             ))}
@@ -78,17 +113,11 @@ const Sparkline = ({ data }: { data: number[] }) => {
 
   const linePath = data.map((d, i) => [xScale(i), yScale(d)].join(',')).join(' L ');
 
-  const getColor = () => {
-    const first = data[0];
-    const last = data[data.length - 1];
-    if (last > first) return 'green';
-    if (last < first) return 'red';
-    return 'black';
-  };
+  const color = data[data.length - 1] > data[0] ? 'green' : data[data.length - 1] < data[0] ? 'red' : 'black';
 
   return (
     <svg width={width} height={height}>
-      <path d={`M ${linePath}`} fill="none" stroke={getColor()} strokeWidth={strokeWidth} />
+      <path d={`M ${linePath}`} fill="none" stroke={color} strokeWidth={strokeWidth} />
     </svg>
   );
 };
