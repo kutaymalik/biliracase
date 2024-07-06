@@ -4,7 +4,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <h3 align="center">BiLiraCase</h3>
+  <h1 align="center">BiLiraCase</h1>
 
   <p align="center">
     An application to display and track real-time cryptocurrency data using Binance API.
