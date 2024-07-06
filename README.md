@@ -4,7 +4,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  ![bilira](https://github.com/kutaymalik/biliracase/assets/56682209/2eb01afe-d4eb-42ee-acf0-18da1d656cbd)
+  <a href="![bilira](https://github.com/kutaymalik/biliracase/assets/56682209/2eb01afe-d4eb-42ee-acf0-18da1d656cbd)">View Demo</a>
+  
 
 
   <h3 align="center">BiLiraCase</h3>
