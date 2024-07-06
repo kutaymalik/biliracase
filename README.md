@@ -1,46 +1,91 @@
-# Getting Started with Create React App
+<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
+<a id="readme-top"></a>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<!-- PROJECT SHIELDS -->
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
-## Available Scripts
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/your_username/BiLiraCase">
+    <img src="public/logo.png" alt="Logo" width="80" height="80">
+  </a>
 
-In the project directory, you can run:
+  <h3 align="center">BiLiraCase</h3>
 
-### `npm start`
+  <p align="center">
+    An application to display and track real-time cryptocurrency data using Binance API.
+    <br />
+    <a href="https://github.com/your_username/BiLiraCase"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/your_username/BiLiraCase">View Demo</a>
+    ·
+    <a href="https://github.com/your_username/BiLiraCase/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/your_username/BiLiraCase/issues">Request Feature</a>
+  </p>
+</div>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-### `npm test`
+[![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This project was created for the 'Frontend Developer' position at BiLira. It aims to display a list of cryptocurrencies fetched from the Binance API, along with their real-time price changes.
 
-### `npm run build`
+Here's why:
+* **Real-time Updates**: Prices are fetched in real-time from Binance via a WebSocket connection, and all price changes are reflected on the page instantly.
+* **Detailed Information**: Details are fetched from Binance's `exchangeInfo` endpoint. An initial state for the coins is created using `React-Redux`.
+* **Coin Icons**: Icons are mapped from CoinCap PNGs in the initial state. Only one request per coin is made to display icons. If a coin's icon is not available on CoinCap, a default icon is shown.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Built With
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+* [![React][React.js]][React-url]
+* [![Redux][Redux.js]][Redux-url]
+* [![TypeScript][TypeScript]][TypeScript-url]
+* [![Axios][Axios]][Axios-url]
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### `npm run eject`
+<!-- GETTING STARTED -->
+## Getting Started
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+To get a local copy up and running follow these simple steps.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Prerequisites
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+* npm
+  ```sh
+  npm install --force
