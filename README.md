@@ -19,7 +19,7 @@ Here's why:
 ### Built With
 
 * [[![React][React.js]][React-url]](https://user-images.githubusercontent.com/25181517/183897015-94a058a6-b86e-4e42-a37f-bf92061753e5.png)
-* [![Redux][Redux.js]][Redux-url]
+* [[![Redux][Redux.js]][Redux-url]](https://user-images.githubusercontent.com/25181517/183897015-94a058a6-b86e-4e42-a37f-bf92061753e5.png)
 * [![TypeScript][TypeScript]][TypeScript-url]
 * [![Axios][Axios]][Axios-url]
 
