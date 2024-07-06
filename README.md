@@ -1,8 +1,7 @@
-<!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
-<a id="readme-top"></a>
-
 <h1 align="center">BiLiraCase</h1>
-![bilira](https://github.com/kutaymalik/biliracase/assets/56682209/2817c474-4df7-4e69-8320-5e130bd5afb4)
+
+![bilira](https://github.com/kutaymalik/biliracase/assets/56682209/d8d5dc6e-77dd-4a50-bab8-93620ccf4347)
+
   <p align="center">
     An application to display and track real-time cryptocurrency data using Binance API.
     <br />
