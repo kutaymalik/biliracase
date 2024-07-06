@@ -1,7 +1,4 @@
 <h1 align="center">BiLiraCase</h1>
-
-![bilira](https://github.com/kutaymalik/biliracase/assets/56682209/d8d5dc6e-77dd-4a50-bab8-93620ccf4347)
-
   <p align="center">
     An application to display and track real-time cryptocurrency data using Binance API.
     <br />
