@@ -3,7 +3,7 @@ import React from 'react';
 
 const Sparkline: React.FC<{ data: number[] }> = ({ data }) => {
   const width = 80;
-  const height = 30;
+  const height = 20;
   const strokeWidth = 2;
 
   const min = Math.min(...data);
