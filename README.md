@@ -1,17 +1,13 @@
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a id="readme-top"></a>
 
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <h1 align="center">BiLiraCase</h1>
-
+<h1 align="center">BiLiraCase</h1>
+![bilira](https://github.com/kutaymalik/biliracase/assets/56682209/2817c474-4df7-4e69-8320-5e130bd5afb4)
   <p align="center">
     An application to display and track real-time cryptocurrency data using Binance API.
     <br />
-    <a href="https://spectacular-entremet-f6c0ed.netlify.app">View Demo</a>
   </p>
-</div>
+
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
