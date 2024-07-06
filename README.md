@@ -16,11 +16,7 @@
     <a href="https://github.com/your_username/BiLiraCase"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/your_username/BiLiraCase">View Demo</a>
-    ·
-    <a href="https://github.com/your_username/BiLiraCase/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/your_username/BiLiraCase/issues">Request Feature</a>
+    <a href="https://spectacular-entremet-f6c0ed.netlify.app">View Demo</a>
   </p>
 </div>
 
