@@ -12,7 +12,7 @@
 This project was created for the 'Frontend Developer' position at BiLira. It aims to display a list of cryptocurrencies fetched from the Binance API, along with their real-time price changes.
 
 Here's why:
-* **Coin Details**: Detailed information about the coins is fetched from Binance's exchangeInfo endpoint, and an initial state is created for the coins using React-Redux.
+* ***Coin Details***: Detailed information about the coins is fetched from Binance's exchangeInfo endpoint, and an initial state is created for the coins using React-Redux.
 * **Real-Time Price Updates**: Real-time price information is fetched from Binance via a WebSocket connection. All price changes are instantly reflected on the page.
 * **Coin Icons**: Since Binance does not provide icons for the coins, CoinCap icon PNGs are mapped to the initial state. When the component is created, only one request per coin is made to display the icons. If a coin's icon is not available on CoinCap, a default icon is shown. A 404 (Not Found) error might appear in the console if some coins' icons are not found.
 * **Kline Data**: Kline data is fetched from another Binance service and set in the initial state using Redux. The graph (Sparkline) of the coin is drawn on the screen once the Kline data is completed. Due to Binance's request rate limit, it takes some time to fetch this data, causing the graphs to load after the initial screen load. If a backend was present, Kline data could be fetched daily or at specific intervals, allowing for real-time graphs when the frontend connects.
