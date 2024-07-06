@@ -1,0 +1,17 @@
+/* src/components/style/AssetTable.css */
+.flash {
+  animation: flash-animation 0.5s;
+}
+
+@keyframes flash-animation {
+  from {
+    background-color: rgba(255, 255, 0, 0.5);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+.sparkline-cell {
+  text-align: right;
+}

@@ -1,3 +1,4 @@
+// src/hooks/useWebSocket.ts
 import { useState, useEffect } from 'react';
 import { Asset } from '../types/Asset';
 

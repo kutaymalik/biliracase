@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AppDispatch } from '../store/store';
-import { fetchExchangeInfo, fetchKlineData } from '../api/binance';
+import { AppDispatch } from './store';
+import { fetchExchangeInfo, fetchKlineData } from '../api/apiService';
 
 interface Asset {
   s: string;
@@ -10,6 +10,7 @@ interface Asset {
   P: string;
   klineData?: number[];
   priceChanged?: boolean;
+  quoteAsset?: string;
 }
 
 interface AssetsState {
@@ -17,15 +18,17 @@ interface AssetsState {
   iconMap: { [key: string]: string };
   errorIcons: string[];
   symbolMap: { [key: string]: string };
-  nameMap: { [key: string]: string }; // Coin isimleri için ekleme
+  nameMap: { [key: string]: string };
+  stepSizeMap: { [key: string]: string };
 }
 
 const initialState: AssetsState = {
   assets: [],
-  iconMap: JSON.parse(localStorage.getItem('iconMap') || '{}'),
+  iconMap: {},
   errorIcons: [],
-  symbolMap: JSON.parse(localStorage.getItem('symbolMap') || '{}'),
-  nameMap: JSON.parse(localStorage.getItem('nameMap') || '{}'), // Coin isimleri için ekleme
+  symbolMap: {},
+  nameMap: {},
+  stepSizeMap: {},
 };
 
 const assetsSlice = createSlice({
@@ -60,20 +63,23 @@ const assetsSlice = createSlice({
     },
     setIconMap(state, action: PayloadAction<{ [key: string]: string }>) {
       state.iconMap = action.payload;
-      localStorage.setItem('iconMap', JSON.stringify(state.iconMap));
     },
     setSymbolMap(state, action: PayloadAction<{ [key: string]: string }>) {
       state.symbolMap = action.payload;
-      localStorage.setItem('symbolMap', JSON.stringify(state.symbolMap));
     },
-    setNameMap(state, action: PayloadAction<{ [key: string]: string }>) { // Coin isimleri için ekleme
+    setNameMap(state, action: PayloadAction<{ [key: string]: string }>) {
       state.nameMap = action.payload;
-      localStorage.setItem('nameMap', JSON.stringify(state.nameMap));
+    },
+    setStepSizeMap(state, action: PayloadAction<{ [key: string]: string }>) {
+      state.stepSizeMap = action.payload;
     },
   },
 });
 
-export const { setInitialAssets, updateAsset, setKlineData, addErrorIcon, setIconMap, setSymbolMap, setNameMap } = assetsSlice.actions;
+export const {
+  setInitialAssets, updateAsset, setKlineData, addErrorIcon,
+  setIconMap, setSymbolMap, setNameMap, setStepSizeMap
+} = assetsSlice.actions;
 export default assetsSlice.reducer;
 
 export const initializeAssets = () => async (dispatch: AppDispatch) => {
@@ -85,6 +91,7 @@ export const initializeAssets = () => async (dispatch: AppDispatch) => {
       p: '0',
       q: '0',
       P: '0',
+      quoteAsset: symbolInfo.quoteAsset
     }));
 
     dispatch(setInitialAssets(assets));
@@ -107,11 +114,19 @@ export const initializeAssets = () => async (dispatch: AppDispatch) => {
       return map;
     }, {});
 
+    const stepSizeMap = exchangeInfo.symbols.reduce((map: { [key: string]: string }, symbolInfo: { symbol: string, filters: any[] }) => {
+      const priceFilter = symbolInfo.filters.find(filter => filter.filterType === 'PRICE_FILTER');
+      if (priceFilter) {
+        map[symbolInfo.symbol] = priceFilter.tickSize;
+      }
+      return map;
+    }, {});
+
     dispatch(setIconMap(iconMap));
     dispatch(setSymbolMap(symbolMap));
     dispatch(setNameMap(nameMap));
+    dispatch(setStepSizeMap(stepSizeMap));
 
-    // Fetch initial kline data for sparklines
     for (const asset of assets) {
       const klineData = await fetchKlineData(asset.s);
       dispatch(setKlineData({ symbol: asset.s, klineData }));
