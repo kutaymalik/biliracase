@@ -11,7 +11,7 @@
 
 This project was created for the 'Frontend Developer' position at BiLira. It aims to display a list of cryptocurrencies fetched from the Binance API, along with their real-time price changes.
 
-Here's why:
+Project Details:
 * ***Coin Details***: Detailed information about the coins is fetched from Binance's exchangeInfo endpoint, and an initial state is created for the coins using React-Redux.
   <br/><br />
 * ***Real-Time Price Updates***: Real-time price information is fetched from Binance via a WebSocket connection. All price changes are instantly reflected on the page.
