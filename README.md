@@ -24,9 +24,9 @@ Here's why:
   <br/><br />
 * ***Price Change Animation***: A flash animation in yellow is created for coins whose prices change.
   <br/><br />
-* ***Component Breakdown:***: Components are divided into smaller parts for better development.
+* ***Component Breakdown***: Components are divided into smaller parts for better development.
   <br/><br />
-* ***Unit Testing:***: Unit tests are written for the logic layer, including apiService and webSocket.
+* ***Unit Testing***: Unit tests are written for the logic layer, including apiService and webSocket.
   <br/><br />
 ### Built With
 
