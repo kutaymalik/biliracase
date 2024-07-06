@@ -6,7 +6,7 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## About The Project <a href="https://spectacular-entremet-f6c0ed.netlify.app">***View Demo***</a> :fa-hand-o-up:
+## About The Project <a href="https://spectacular-entremet-f6c0ed.netlify.app">***View Demo***</a> :fa-hand-o-up
 ![Ekran görüntüsü 2024-07-06 160008](https://github.com/kutaymalik/biliracase/assets/56682209/d05491a5-96eb-4715-9caf-100cbc7f2367)
 
 This project was created for the 'Frontend Developer' position at BiLira. It aims to display a list of cryptocurrencies fetched from the Binance API, along with their real-time price changes.
