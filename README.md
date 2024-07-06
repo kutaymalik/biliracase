@@ -1,14 +1,6 @@
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a id="readme-top"></a>
 
-<!-- PROJECT SHIELDS -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -86,6 +78,24 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
-* npm
-  ```sh
-  npm install --force
+  ### Installation
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/your_username/BiLiraCase.git
+
+
+2. Install NPM packages
+   ```sh
+   npm install --force
+
+3. Create a .env file in the root directory with the following content:
+   ```sh
+   REACT_APP_API_URL=https://api.binance.com/api/v3/ticker/24hr
+   REACT_APP_EXCHANGE_INFO_URL=https://api.binance.com/api/v3/exchangeInfo
+   REACT_APP_KLINE_URL=https://api.binance.com/api/v3/klines
+   
+4. Start the development server
+   ```sh
+   npm start
+
