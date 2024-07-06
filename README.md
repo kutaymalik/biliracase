@@ -1,4 +1,4 @@
-<h1 align="center">BiLiraCase</h1>
+<h1 align="center">BiLiraCase</h1> <a href="https://spectacular-entremet-f6c0ed.netlify.app">View Demo</a>
   <p align="center">
     An application to display and track real-time cryptocurrency data using Binance API.
     <br />
