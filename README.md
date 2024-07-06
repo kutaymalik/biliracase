@@ -5,7 +5,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/your_username/BiLiraCase">
-    <img src="public/logo.png" alt="Logo" width="80" height="80">
+    ![bilira](https://github.com/kutaymalik/biliracase/assets/56682209/e0d2ac7e-8e47-4006-b8a2-3d10d0c23d64)
   </a>
 
   <h3 align="center">BiLiraCase</h3>
